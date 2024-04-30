@@ -58,7 +58,7 @@ The next step is to launch EC2 instance using an Auto Scaling Group. Click on Cr
 
 ![Snipe 6](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/9b6cd6cc-a171-45db-9c57-485ee18f4beb)
 
-
+For the OS I will be using my custom Amazon Linux AMI which already has a website baked into it. Choose the instance type and key pair. Create a new web security group that allows SSH and HTTP access.
 
 
 
