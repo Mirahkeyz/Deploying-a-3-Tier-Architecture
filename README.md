@@ -60,6 +60,55 @@ The next step is to launch EC2 instance using an Auto Scaling Group. Click on Cr
 
 For the OS I will be using my custom Amazon Linux AMI which already has a website baked into it. Choose the instance type and key pair. Create a new web security group that allows SSH and HTTP access.
 
+In Advanced network configuration, Enable Auto-assign public IP. Now click on create launch template.
+
+Head back to ASG and select the LT we just created and click Next. In the next screen choose both public subnets under Availability Zones and subnets and click Next.
+
+We will not be adding a load balancer just yet. Leave everything default and click Next. For Desired capacity, Min and Max, I will set at 0 for now. For Scaling policies select Target tracking scaling policy and leave everything else default and click Next. Continue to click next until you can create the auto scaling group.
+
+The last step in the web tier is to create the public route table and associate the 2 public subnets.
+
+Head over to Route table, Create route table. I will be naming it Web Tier RT 1. Choose the VPC and click Create route table.
+
+After it is created click on the Subnet associations tab, Edit subnet associations, select both subnets then click on Save associations.
+
+![Snipe 7](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/52e149e3-d256-427f-b0e4-67ec1339c4e6)
+
+We finished with the Web Tier for now. Lets continue on to the Application Tier.
+
+Application Tier:
+
+— 2 private subnets
+
+— Minimum of 2 EC2 instances with an OS of your choice (free tier) in an Auto Scaling Group.
+
+— EC2 Application Server Security Group allowing inbound permission from the Web Server Security Group.
+
+— Associate with private route table.
+
+Let’s start by creating the 2 private subnets. I will be naming them Private App Tier 1 (
+
+![Snipe 8](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/7c2973d8-ec20-4a2b-8441-ddc24f286de4)
+
+Next create the private route table and associate the 2 private subnets.
+
+![Snipe 9](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/5213c6e2-7311-4e14-9913-5cb5d1a00373)
+
+Let’s create the App Tier security group. It needs to allow SSH & ICMP access from the Web Tier only.
+
+![Snipe 10](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/13f3cff0-eb64-42ff-93cb-e19f63a03d34)
+
+Head over to auto scaling groups to create one for the App Tier.
+
+
+
+
+
+
+
+
+
+
 
 
 
