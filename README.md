@@ -126,6 +126,79 @@ Let’s start by creating the 2 DB Tier subnets. I will be naming them Private D
 
 ![Snipe 13](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/9a6d0637-dc93-4872-8112-7aa77dd29a7f)
 
+![Snipe 14](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/6c63b1a8-f67c-4345-9e06-d6ca8a15d010)
+
+Next create a DB Tier route table and associate the 2 DB subnets with it.
+
+![Snipe 15](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/743b1954-ad28-4f7d-afda-f972f168dcf0)
+
+It’s time to create the Database security group. Create a rule allowing inbound access from the Application security group.
+
+Now we create the Database. Search for RDS, Create database, Standard create, MySQL, Free Tier.
+
+If we were creating a Multi-AZ then we would choose Multi-AZ DB cluster in the Availability and durability section.
+
+Give the DB a name and master password, select the DB SG, Availability Zone then create the database.
+
+We have now finished the Database Tier.
+
+We need to create a NAT Gateway so that our App Tier can access the internet for updating packages and patching.
+
+Head over to NAT Gateway and click on Create NAT Gateway. Give it a name, select a subnet and allocate an elastic IP.
+
+![Snipe 16](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/b6cfa00d-ec34-46af-8f82-666e148ae9c0)
+
+Next we have to add a route table entry in the App Tier RT. Destination should be 0.0.0.0/0, target is the NAT Gateway.
+
+We also have to create a route from the Web Tier RT to the Internet Gateway.
+
+This concludes Tier 1 of the project.
+
+# Tier 2: ADVANCED (DO NOT ATTEMPT UNTIL YOU HAVE DONE THE FOUNDATIONAL PROJECT)
+
+Application Load Balancers should be used for the Web Tiers with the same Security Group considerations. Example The ALB should allow HTTP traffic from 0.0.0.0/0 and the Web Server Security group should allow traffic only from the ALB. Don’t forget to create Target Groups and enable Health Checks.
+
+Let’s start by creating the 2 Application load balancers (Web Tier & App Tier).
+
+Head over to load balancers and create an application LB. Give it a name, make sure Internet-facing is selected. In Network mapping, select the 2 Web Tier subnets.
+
+Click on create a new security group an allow inbound HTTP.
+
+![Snipe 17](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/885c182c-4be2-4e9f-899d-4cd097d49df4)
+
+![Snipe 18](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/65627ec5-8257-4b90-866a-07459ed8c02b)
+
+Select the SG we just created then scroll down and click on Create target group. Give it a name and leave everything else default. In the listeners and routing section, select the target group just created then create load balancer.
+
+Head back to the Web ASG and edit it. Add the TG in the Load balancing section then tick Turn on ELB health checks in the Health checks section. Then click Update.
+
+Now we have to go through the exact same process with the App Tier.
+
+![Snipe 19](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/bcaf32cf-6ec3-4c43-9e36-b8bdd0a25540)
+
+![Snipe 20](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/eb05b86b-a827-42d3-8818-a0f78fa386eb)
+
+![Snipe 21](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/d6e38451-f862-447f-90e8-c89f132e9bce)
+
+It’s testing time. Go into each ASG and change the desired capacity to 2, Min 2, Max 5. While that is running, we need to further secure our Web Tier app by removing the HTTP access directly.
+
+Go to security groups and edit the Web Tier SG. Remove 0.0.0.0/0 and replace it with the ALB inbound SG we created earlier.
+
+We should be able to access the website using the Web-TierALB DNS URL….
+
+![Snipe 22](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/64dbab93-43a3-4076-bb36-33ef233b7e1a)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
