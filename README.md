@@ -100,10 +100,31 @@ Let’s create the App Tier security group. It needs to allow SSH & ICMP access 
 
 Head over to auto scaling groups to create one for the App Tier.
 
+![Snipe 11](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/b88e1240-d8fe-4025-a0bb-d1eb55b01c90)
 
+![Snipe 12](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/fc8ab89d-ec89-4d47-8df0-d02710810bb7)
 
+In the ASG Network section make sure to select both private subnets. I will not be creating the load balancer for App Tier yet. Zero out the Desired, Min and Max then create the ASG.
 
+We finished with the App Tier for now. let’s take care of the DB Tier.
 
+Database Tier:
+
+— Use a free Tier MySQL RDS Database.
+
+— The Database Security Group should allow inbound traffic for MySQL from the Application Server Security Group.
+
+— 2 private subnets.
+
+— Associate with private route table.
+
+Note: No need to use Multi-AZ but be sure to document how you would add it
+
+— Remember that when diagraming this tier you are only creating one RDS instance in one subnet even though you are creating two subnets. If you use Multi-AZ or a read replica then and only then should you have a second instance. Make sure to label accordingly.
+
+Let’s start by creating the 2 DB Tier subnets. I will be naming them Private DB Tier 1 (us-east-1a 172.31.5.0/24) & Private DB Tier 2 (us-east-1b 172.31.6.0/24).
+
+![Snipe 13](https://github.com/Mirahkeyz/Deploying-a-3-Tier-Architecture/assets/134533695/9a6d0637-dc93-4872-8112-7aa77dd29a7f)
 
 
 
